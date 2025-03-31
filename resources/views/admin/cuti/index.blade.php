@@ -261,11 +261,11 @@
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400">Tanggal Approval Manager</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                            {{ $cuti->approved_at_manager ? \Carbon\Carbon::parse($cuti->approved_at_manager)->format('d-m-Y H:i:s') : '-' }}
+                                            {{ $cuti->approved_at_manager ? \Carbon\Carbon::parse($cuti->approved_at_manager)->format('d-m-Y') : '-' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400">Tanggal Approval HRD</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                            {{ $cuti->approved_at_hrd ? \Carbon\Carbon::parse($cuti->approved_at_hrd)->format('d-m-Y H:i:s') : '-' }}
+                                            {{ $cuti->approved_at_hrd ? \Carbon\Carbon::parse($cuti->approved_at_hrd)->format('d-m-Y') : '-' }}
                                         </td>
                                     </tr>
                                     <tr>
@@ -276,9 +276,9 @@
                                     </tr>
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400">Tanggal Pengajuan</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ \Carbon\Carbon::parse($cuti->created_at)->format('d-m-Y H:i:s') }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ \Carbon\Carbon::parse($cuti->created_at)->format('d-m-Y') }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400">Terakhir Diupdate</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ \Carbon\Carbon::parse($cuti->updated_at)->format('d-m-Y H:i:s') }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">{{ \Carbon\Carbon::parse($cuti->updated_at)->format('d-m-Y') }}</td>
                                     </tr>
                                 </tbody>
                             </table>

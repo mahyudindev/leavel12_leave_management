@@ -6,6 +6,17 @@
     <div class="@if(auth()->user()->role === 'manager') p-4 sm:ml-64 @else max-w-7xl mx-auto sm:px-6 lg:px-8 mt-5 @endif">
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900 dark:text-gray-100">
+                @if(session('success'))
+                    <div class="mb-4 p-4 bg-green-500 text-white rounded-lg" id="successMessage">
+                        {{ session('success') }}
+                    </div>
+                    <script>
+                        // Hide the success message after 3 seconds
+                        setTimeout(() => {
+                            document.getElementById('successMessage').style.display = 'none';
+                        }, 3000);
+                    </script>
+                @endif
                 <h3 class="text-lg font-bold mb-4">Riwayat Cuti</h3>
                 <!-- Membuat tabel responsif -->
                 <div class="overflow-x-auto">
@@ -28,6 +39,8 @@
                                 <th scope="col" class="px-6 py-3 text-left text-sm font-bold text-gray-500 uppercase dark:text-gray-400">Status</th>
                                 <!-- Catatan -->
                                 <th scope="col" class="px-6 py-3 text-left text-sm font-bold text-gray-500 uppercase dark:text-gray-400">Catatan</th>
+                                <!-- Aksi -->
+                                <th scope="col" class="px-6 py-3 text-left text-sm font-bold text-gray-500 uppercase dark:text-gray-400">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-600">
@@ -68,10 +81,35 @@
                                             <p class="text-gray-500 dark:text-gray-400">-</p>
                                         @endif
                                     </td>
+                                    @if(auth()->user()->role === 'manager' && $cuti->status === 'Pending' && $cuti->status_manager === 'Approved' && $cuti->status_hrd === 'Pending')
+                                    <td class="px-6 py-4">
+                                        <form action="{{ route('cuti.cancel', ['id' => $cuti->cuti_id]) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" 
+                                                class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-600"
+                                                onclick="return confirm('Apakah Anda yakin ingin membatalkan pengajuan cuti ini?')">
+                                                Batalkan
+                                            </button>
+                                        </form>
+                                    </td>
+                                    @elseif(auth()->user()->role !== 'manager' && $cuti->status === 'Pending' && $cuti->status_manager === 'Pending' && $cuti->status_hrd === 'Pending')
+                                    <td class="px-6 py-4">
+                                        <form action="{{ route('cuti.cancel', ['id' => $cuti->cuti_id]) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" 
+                                                class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-600"
+                                                onclick="return confirm('Apakah Anda yakin ingin membatalkan pengajuan cuti ini?')">
+                                                Batalkan
+                                            </button>
+                                        </form>
+                                    </td>
+                                    @endif
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">Belum ada riwayat cuti.</td>
+                                    <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">Belum ada riwayat cuti.</td>
                                 </tr>
                             @endforelse
                         </tbody>

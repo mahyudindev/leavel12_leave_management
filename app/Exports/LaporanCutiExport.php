@@ -27,8 +27,12 @@ class LaporanCutiExport implements FromView, WithStyles, ShouldAutoSize
             ->whereMonth('tanggal_awal', date('m', strtotime($this->bulan)))
             ->get()
             ->map(function ($item) {
-                $item->tanggal_awal = Carbon::parse($item->tanggal_awal)->format('d/m/Y');
-                $item->tanggal_akhir = Carbon::parse($item->tanggal_akhir)->format('d/m/Y');
+                // Parse dates using custom format
+                $tanggalAwal = \DateTime::createFromFormat('d/m/Y', $item->tanggal_awal);
+                $tanggalAkhir = \DateTime::createFromFormat('d/m/Y', $item->tanggal_akhir);
+                
+                $item->tanggal_awal = $tanggalAwal ? $tanggalAwal->format('d/m/Y') : $item->tanggal_awal;
+                $item->tanggal_akhir = $tanggalAkhir ? $tanggalAkhir->format('d/m/Y') : $item->tanggal_akhir;
                 return $item;
             });
 

@@ -33,9 +33,9 @@ class UsersExport implements FromCollection, WithHeadings, WithCustomStartCell, 
 
     public function collection()
     {
-        $query = User::select('users.*', 'departemen.nama as departemen_nama', 'jabatan.nama as jabatan_nama')
-            ->leftJoin('departemen', 'users.departemen_id', '=', 'departemen.id')
-            ->leftJoin('jabatan', 'users.jabatan_id', '=', 'jabatan.id');
+        $query = User::select('users.name', 'departemen.nama as departemen_nama', 'jabatan.nama as jabatan_nama', 'users.tanggal_akhir_kerja')
+            ->leftJoin('departemen', 'users.departemen_id', '=', 'departemen.departemen_id')
+            ->leftJoin('jabatan', 'users.jabatan_id', '=', 'jabatan.jabatan_id');
 
         if ($this->departemenId) {
             $query->where('users.departemen_id', $this->departemenId);
@@ -45,14 +45,10 @@ class UsersExport implements FromCollection, WithHeadings, WithCustomStartCell, 
             ->map(function ($user, $index) {
                 return [
                     'No' => $index + 1,
-                    'NIK' => $user->nik,
                     'Nama' => $user->name,
-                    'Email' => $user->email,
                     'Departemen' => $user->departemen_nama ?? 'Tidak Ada',
                     'Jabatan' => $user->jabatan_nama ?? 'Tidak Ada',
-                    'Role' => ucfirst($user->role),
-                    'Jumlah Cuti' => $user->jumlah_cuti,
-                    'Tanggal Masuk' => $user->tanggal_masuk,
+                    'Status' => $user->tanggal_akhir_kerja ? 'Karyawan Kontrak' : 'Karyawan Tetap',
                 ];
             });
     }
@@ -61,14 +57,10 @@ class UsersExport implements FromCollection, WithHeadings, WithCustomStartCell, 
     {
         return [
             'No',
-            'NIK',
             'Nama',
-            'Email',
             'Departemen',
             'Jabatan',
-            'Role',
-            'Jumlah Cuti',
-            'Tanggal Masuk',
+            'Status',
         ];
     }
 
@@ -85,7 +77,7 @@ class UsersExport implements FromCollection, WithHeadings, WithCustomStartCell, 
     public function styles(Worksheet $sheet)
     {
         $lastRow = $sheet->getHighestRow();
-        $lastColumn = 'I';
+        $lastColumn = 'E';
 
         // Title
         $sheet->mergeCells('A1:' . $lastColumn . '1');
@@ -142,14 +134,10 @@ class UsersExport implements FromCollection, WithHeadings, WithCustomStartCell, 
 
         // Set column widths
         $sheet->getColumnDimension('A')->setWidth(5);  // No
-        $sheet->getColumnDimension('B')->setWidth(15); // NIK
-        $sheet->getColumnDimension('C')->setWidth(30); // Nama
-        $sheet->getColumnDimension('D')->setWidth(35); // Email
-        $sheet->getColumnDimension('E')->setWidth(20); // Departemen
-        $sheet->getColumnDimension('F')->setWidth(20); // Jabatan
-        $sheet->getColumnDimension('G')->setWidth(15); // Role
-        $sheet->getColumnDimension('H')->setWidth(15); // Jumlah Cuti
-        $sheet->getColumnDimension('I')->setWidth(15); // Tanggal Masuk
+        $sheet->getColumnDimension('B')->setWidth(30); // Nama
+        $sheet->getColumnDimension('C')->setWidth(20); // Departemen
+        $sheet->getColumnDimension('D')->setWidth(20); // Jabatan
+        $sheet->getColumnDimension('E')->setWidth(20); // Status
 
         return $sheet;
     }

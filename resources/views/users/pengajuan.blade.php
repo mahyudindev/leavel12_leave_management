@@ -89,7 +89,10 @@
                 onClose: function(selectedDates, dateStr, instance) {
                     if (selectedDates.length > 0) {
                         // Format for backend: YYYY-MM-DD
-                        const formattedDate = selectedDates[0].toISOString().split('T')[0];
+                        const date = selectedDates[0];
+                        const formattedDate = date.getFullYear() + '-' + 
+                            String(date.getMonth() + 1).padStart(2, '0') + '-' +
+                            String(date.getDate()).padStart(2, '0');
                         document.getElementById('tanggal_awal').value = formattedDate;
                     }
                 }
@@ -101,7 +104,10 @@
                 onClose: function(selectedDates, dateStr, instance) {
                     if (selectedDates.length > 0) {
                         // Format for backend: YYYY-MM-DD
-                        const formattedDate = selectedDates[0].toISOString().split('T')[0];
+                        const date = selectedDates[0];
+                        const formattedDate = date.getFullYear() + '-' + 
+                            String(date.getMonth() + 1).padStart(2, '0') + '-' +
+                            String(date.getDate()).padStart(2, '0');
                         document.getElementById('tanggal_akhir').value = formattedDate;
                     }
                 }

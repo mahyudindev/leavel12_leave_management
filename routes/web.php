@@ -24,7 +24,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Manajemen cuti
     Route::get('/cuti', [AdminCutiController::class, 'adminCuti'])->name('cuti.index');
     Route::get('/cuti/{status}', [AdminCutiController::class, 'adminCuti'])->name('cuti.status');
-    Route::put('/cuti/{cuti_id}/update-status', [AdminCutiController::class, 'updateCuti'])->name('cuti.update-status');
+    Route::put('/cuti/{cuti_id}/update-status', [AdminCutiController::class, 'updateStatus'])->name('cuti.update-status');
 
     // Laporan cuti
     Route::get('/laporan-cuti', [LaporanCutiController::class, 'index'])->name('laporan.cuti');
@@ -60,6 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Pengajuan cuti user
     Route::get('/cuti/pengajuan', [CutiController::class, 'pengajuanCuti'])->name('cuti.pengajuan');
     Route::post('/cuti/ajukan', [CutiController::class, 'ajukanCuti'])->name('cuti.ajukan');
+    Route::delete('/cuti/{id}/cancel', [CutiController::class, 'cancel'])->name('cuti.cancel');
 
     // Profil user
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
